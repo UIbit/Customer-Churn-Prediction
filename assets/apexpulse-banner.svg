@@ -1,0 +1,52 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.52" stop-color="#0B3B61"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="260" y1="80" x2="940" y2="280" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#67E8F9"/>
+      <stop offset="1" stop-color="#A7F3D0"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1200" height="360" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="18" result="effect1_foregroundBlur_1_1"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="360" rx="32" fill="url(#bg)"/>
+  <g opacity="0.18">
+    <circle cx="120" cy="70" r="110" fill="#67E8F9"/>
+    <circle cx="1080" cy="290" r="140" fill="#14B8A6"/>
+    <circle cx="1040" cy="70" r="70" fill="#A78BFA"/>
+  </g>
+  <g opacity="0.18">
+    <path d="M80 80H1120" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="10 10"/>
+    <path d="M80 140H1120" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="10 10"/>
+    <path d="M80 200H1120" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="10 10"/>
+    <path d="M80 260H1120" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="10 10"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="78" y="70" width="92" height="92" rx="24" fill="url(#accent)"/>
+    <path d="M105 125C115 101 146 101 156 125" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
+    <path d="M108 93L126 111L156 82" stroke="#0F172A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="208" y="120" fill="#F8FAFC" font-size="54" font-family="Segoe UI, Inter, Arial, sans-serif" font-weight="800" letter-spacing="-1.2">ApexPulse Retention Studio</text>
+  <text x="210" y="165" fill="#BFDBFE" font-size="22" font-family="Segoe UI, Inter, Arial, sans-serif" font-weight="500">Bank customer churn prediction dashboard</text>
+  <text x="210" y="204" fill="#DBEAFE" font-size="16" font-family="Segoe UI, Inter, Arial, sans-serif" font-weight="400">Streamlit frontend • Scikit-learn inference • model artifacts in /models</text>
+  <g transform="translate(720 62)">
+    <rect x="0" y="0" width="390" height="236" rx="26" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.16)"/>
+    <rect x="28" y="38" width="56" height="152" rx="14" fill="#E2E8F0" fill-opacity="0.16"/>
+    <rect x="100" y="86" width="56" height="104" rx="14" fill="#67E8F9" fill-opacity="0.88"/>
+    <rect x="172" y="56" width="56" height="134" rx="14" fill="#A7F3D0" fill-opacity="0.88"/>
+    <rect x="244" y="108" width="56" height="82" rx="14" fill="#F8FAFC" fill-opacity="0.72"/>
+    <rect x="316" y="72" width="56" height="118" rx="14" fill="#93C5FD" fill-opacity="0.84"/>
+    <path d="M44 202C90 184 126 166 153 142C183 115 212 93 262 88C306 84 335 98 364 114" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g opacity="0.85">
+    <circle cx="980" cy="286" r="10" fill="#67E8F9"/>
+    <circle cx="1010" cy="286" r="10" fill="#A7F3D0"/>
+    <circle cx="1040" cy="286" r="10" fill="#F8FAFC" fill-opacity="0.7"/>
+  </g>
+</svg>

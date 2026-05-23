@@ -1,8 +1,5 @@
-# ApexPulse Retention Studio
 
-![ApexPulse Retention Studio](assets/apexpulse-banner.svg)
-
-ApexPulse Retention Studio is a bank customer churn prediction project built around a Streamlit dashboard and a pre-trained scikit-learn model pipeline. It predicts whether a customer is likely to churn and returns a risk score, decision outcome, and suggested retention action.
+Verdifi is a bank customer churn prediction project built around a Streamlit dashboard and a pre-trained scikit-learn model pipeline. It predicts whether a customer is likely to churn and returns a risk score, decision outcome, and suggested retention action.
 
 The project uses the classic bank churn dataset, trains and compares multiple models, and packages the best-performing model together with preprocessing artifacts so the app can make predictions immediately.
 

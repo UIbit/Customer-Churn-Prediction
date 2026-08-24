@@ -282,10 +282,25 @@ html, body {
     position: relative;
     z-index: 2;
 }
-/* Form Controls */
+/* Form Controls and Labels */
+/* Input field labels */
+[data-testid="stSelectbox"] label,
+[data-testid="stNumberInput"] label,
+[data-testid="stSlider"] label,
+.stRadio label,
+.stSelectbox label,
+.stNumberInput label,
+p {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    margin-bottom: 8px !important;
+}
+
+/* Input fields */
 [data-testid="stSelectbox"] > div > div,
 [data-testid="stNumberInput"] input,
-[data-testid="stSlider"] {
+[data-testid="stSlider"] div,
+.stSelectbox select {
     background: rgba(30, 30, 30, 0.9) !important;
     border: 1px solid #444 !important;
     border-radius: 4px !important;
@@ -297,6 +312,22 @@ html, body {
 [data-testid="stNumberInput"] input:focus {
     border-color: #ff4500 !important;
     box-shadow: 0 0 10px rgba(255, 69, 0, 0.3) !important;
+}
+
+/* Radio button styling */
+[data-testid="stRadio"] label {
+    color: #ffffff !important;
+}
+
+/* Slider labels and values */
+[data-testid="stSlider"] p,
+[data-testid="stSlider"] div {
+    color: #ffffff !important;
+}
+
+/* Markdown text styling */
+.stMarkdown p, .stMarkdown h3, .stMarkdown h2, .stMarkdown h1 {
+    color: #ffffff !important;
 }
 
 [data-testid="stButton"] > button {
@@ -614,7 +645,16 @@ with col1:
     # Customer Input Form
     st.markdown("### Customer Profile Input")
     
-    geography = st.selectbox("Country", le_geo.classes_)
+    # Add note about supported countries
+    st.markdown("""
+    <div style="background: rgba(255, 69, 0, 0.1); border: 1px solid #ff4500; border-radius: 6px; padding: 12px; margin-bottom: 20px;">
+        <div style="color: #ff4500; font-weight: 600; font-size: 12px; margin-bottom: 5px;">📍 SUPPORTED REGIONS</div>
+        <div style="color: #ffffff; font-size: 11px;">This model is trained on European banking data and supports: <strong>France, Germany, Spain</strong></div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    geography = st.selectbox("Country", le_geo.classes_, 
+                           help="Select the customer's country (model supports European markets only)")
     gender = st.selectbox("Gender", le_gen.classes_)
     age = st.slider("Age", 18, 92, 38)
     tenure = st.slider("Tenure (Years)", 0, 10, 5)

@@ -645,6 +645,110 @@ with col1:
     # Customer Input Form
     st.markdown("### Customer Profile Input")
     
+    # Add CSV upload option
+    st.markdown("""
+    <div style="background: rgba(0, 100, 200, 0.1); border: 1px solid #0066cc; border-radius: 6px; padding: 12px; margin-bottom: 20px;">
+        <div style="color: #0066cc; font-weight: 600; font-size: 12px; margin-bottom: 5px;">📤 BATCH PREDICTION</div>
+        <div style="color: #ffffff; font-size: 11px;">Upload a CSV file with multiple customers for batch churn prediction</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # File uploader
+    uploaded_file = st.file_uploader(
+        "Upload CSV for batch prediction", 
+        type=['csv'],
+        help="Upload a CSV file with customer data for batch predictions. Required columns: CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary"
+    )
+    
+    if uploaded_file is not None:
+        try:
+            # Read uploaded CSV
+            df = pd.read_csv(uploaded_file)
+            st.success(f"✅ CSV uploaded successfully! Found {len(df)} customers.")
+            
+            # Show preview
+            st.markdown("**Data Preview:**")
+            st.dataframe(df.head(), use_container_width=True)
+            
+            # Validate required columns
+            required_cols = ['CreditScore', 'Geography', 'Gender', 'Age', 'Tenure', 'Balance', 'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary']
+            missing_cols = [col for col in required_cols if col not in df.columns]
+            
+            if missing_cols:
+                st.error(f"❌ Missing required columns: {', '.join(missing_cols)}")
+            else:
+                if st.button("🔮 Predict All Customers", use_container_width=True):
+                    # Process batch predictions
+                    predictions = []
+                    probabilities = []
+                    
+                    for idx, row in df.iterrows():
+                        try:
+                            # Encode categorical variables
+                            geo_enc = le_geo.transform([row['Geography']])[0]
+                            gen_enc = le_gen.transform([row['Gender']])[0]
+                            
+                            # Handle HasCrCard and IsActiveMember (convert to 0/1 if needed)
+                            cr_card = 1 if str(row['HasCrCard']).lower() in ['yes', '1', 'true'] else 0
+                            active = 1 if str(row['IsActiveMember']).lower() in ['yes', '1', 'true'] else 0
+                            
+                            # Create input array
+                            inp = pd.DataFrame([[
+                                row['CreditScore'], geo_enc, gen_enc, row['Age'], row['Tenure'],
+                                row['Balance'], row['NumOfProducts'], cr_card, active, row['EstimatedSalary']
+                            ]], columns=feature_names)
+                            
+                            # Make prediction
+                            prob = model.predict_proba(scaler.transform(inp))[0][1]
+                            pred = model.predict(scaler.transform(inp))[0]
+                            
+                            predictions.append(pred)
+                            probabilities.append(prob)
+                            
+                        except Exception as e:
+                            st.error(f"Error processing row {idx + 1}: {str(e)}")
+                            predictions.append(None)
+                            probabilities.append(None)
+                    
+                    # Add results to dataframe
+                    df['Churn_Prediction'] = predictions
+                    df['Churn_Probability'] = [f"{p*100:.1f}%" if p is not None else "Error" for p in probabilities]
+                    df['Risk_Level'] = ['High Risk' if p and p > 0.5 else 'Low Risk' if p else 'Error' for p in probabilities]
+                    
+                    # Display results
+                    st.markdown("### 📊 Batch Prediction Results")
+                    
+                    # Summary stats
+                    col_a, col_b, col_c = st.columns(3)
+                    with col_a:
+                        high_risk = sum(1 for p in predictions if p == 1)
+                        st.metric("High Risk Customers", high_risk)
+                    with col_b:
+                        low_risk = sum(1 for p in predictions if p == 0)
+                        st.metric("Low Risk Customers", low_risk)
+                    with col_c:
+                        avg_prob = sum(p for p in probabilities if p is not None) / len([p for p in probabilities if p is not None])
+                        st.metric("Average Risk Score", f"{avg_prob*100:.1f}%")
+                    
+                    # Show detailed results
+                    st.dataframe(df[['CreditScore', 'Geography', 'Gender', 'Age', 'Churn_Prediction', 'Churn_Probability', 'Risk_Level']], use_container_width=True)
+                    
+                    # Download results
+                    csv = df.to_csv(index=False)
+                    st.download_button(
+                        label="📥 Download Results CSV",
+                        data=csv,
+                        file_name=f"churn_predictions_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                        mime="text/csv",
+                        use_container_width=True
+                    )
+                    
+        except Exception as e:
+            st.error(f"❌ Error reading CSV file: {str(e)}")
+    
+    st.markdown("---")
+    st.markdown("### Individual Customer Prediction")
+    
     # Add note about supported countries
     st.markdown("""
     <div style="background: rgba(255, 69, 0, 0.1); border: 1px solid #ff4500; border-radius: 6px; padding: 12px; margin-bottom: 20px;">
